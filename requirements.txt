@@ -1,0 +1,22 @@
+ipykernel
+pandas
+numpy
+matplotlib
+plotly
+seaborn
+scipy
+scikit-learn
+imblearn
+pymongo
+boto3
+mypy-boto3-s3
+botocore
+Django==4.2.5        
+djongo 
+from_root
+dill
+PyYAML
+jinja2
+python-multipart
+-e .
+evidently==0.2.8
