@@ -28,7 +28,7 @@ The **Copyright Infringement Detection System** detects whether digital content 
 The project is organized as follows:
 
  
-
+``` bash
 ├── config/                      # Configuration files for the project
 ├── copyright_infringement/      # Django app folder containing views, models, and URLs
 ├── env/                         # Virtual environment folder (recommend placing outside project directory)
@@ -40,7 +40,7 @@ The project is organized as follows:
 ├── requirements.txt             # Python package dependencies
 ├── setup.py                     # Setup file for packaging
 ├── template.py                  # Base script used for setting up the project
-
+```
 
 ## Setup Instructions
 
