@@ -29,19 +29,18 @@ The project is organized as follows:
 
  
 
-- **config/**: Directory containing project configuration files.
-- **copyright_infringement/**: Django app with views, models, and routes for the application.
-- **env/**: Folder for virtual environment setup.
-- **.dockerignore**: Specifies files that Docker should ignore when building images.
-- **.gitignore**: Specifies files that Git should ignore when tracking changes.
-- **app.py**: The main script for running the application.
-- **demo.py**: A demo file for testing and showcasing machine learning functionality.
-- **Dockerfile**: Docker configuration file to containerize the app.
-- **LICENSE**: Project licensing information.
-- **README.md**: Documentation for the project.
-- **requirements.txt**: Python dependencies for the project.
-- **setup.py**: Script to package the project.
-- **template.py**: A template file for setting up and extending functionalities.
+├── config/                      # Configuration files for the project
+├── copyright_infringement/      # Django app folder containing views, models, and URLs
+├── env/                         # Virtual environment folder (recommend placing outside project directory)
+├── app.py                       # Main entry point for the application
+├── demo.py                      # Demo script for testing machine learning models
+├── Dockerfile                   # Docker configuration for containerizing the application
+├── LICENSE                      # License for the project
+├── README.md                    # Project documentation
+├── requirements.txt             # Python package dependencies
+├── setup.py                     # Setup file for packaging
+├── template.py                  # Base script used for setting up the project
+
 
 ## Setup Instructions
 
