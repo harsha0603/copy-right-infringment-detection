@@ -18,5 +18,6 @@ dill
 PyYAML
 jinja2
 python-multipart
--e .
+#-e .
 evidently==0.2.8
+dvc
