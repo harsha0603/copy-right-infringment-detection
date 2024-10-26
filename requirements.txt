@@ -21,3 +21,6 @@ python-multipart
 #-e .
 evidently==0.2.8
 dvc
+requests
+beautifulsoup4
+pdfplumber
