@@ -24,3 +24,9 @@ dvc
 requests
 beautifulsoup4
 pdfplumber
+nltk
+torch
+torchvision
+torchaudio
+transformers
+json5

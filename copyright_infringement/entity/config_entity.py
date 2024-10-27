@@ -24,5 +24,40 @@ training_pipeline_config: TrainingPipelineConfig = TrainingPipelineConfig()
 class DataIngestionConfig:
     data_ingestion_dir: str = training_pipeline_config.get_component_artifact_dir("data_ingestion_books")
     csv_file_path: str = os.path.join(data_ingestion_dir, "books_data.csv")
-    database_name: str = "copyright_infringement"
+    database_name: str = "copyright"
     collection_name: str = "books"
+
+@dataclass
+class DataPreprocessingConfig:
+    data_preprocessing_dir: str = os.path.join(ARTIFACT_DIR, "data_preprocessing")
+    preprocessed_data_path: str = os.path.join(data_preprocessing_dir, "preprocessed_data.csv")
+    
+    def get_preprocessing_artifact_dir(self) -> str:
+        """Returns the directory for storing preprocessed artifacts."""
+        return self.data_preprocessing_dir
+    
+@dataclass
+class PreprocessingParams:
+    remove_duplicates: bool = True  # Remove duplicate entries
+    lower_case: bool = True          # Convert text to lower case
+    remove_stopwords: bool = True    # Remove common stopwords
+    stemming: bool = False           # Apply stemming
+    lemmatization: bool = False      # Apply lemmatization
+    max_length: int = 512            # Max length of sequences for BERT input
+    remove_special_chars: bool = True # Remove special characters
+
+# Configuration for Embedding Generation
+@dataclass
+class EmbeddingConfig:
+    embedding_dir: str = training_pipeline_config.get_component_artifact_dir("embeddings")
+    model_name: str = "bert-base-uncased"  # Model name for generating embeddings
+    batch_size: int = 16                   # Batch size for embedding generation
+    embedding_file_path: str = os.path.join(embedding_dir, "text_embeddings.pkl")
+    metadata_file_path: str = os.path.join(embedding_dir, "metadata.pkl")  # Metadata (author/title) for reference
+    max_length: int = 512 
+embedding_config: EmbeddingConfig = EmbeddingConfig()
+
+
+@dataclass
+class SimilarityDetectionConfig:
+    similarity_threshold: float = 0.75  # Adjust based on your accuracy needs

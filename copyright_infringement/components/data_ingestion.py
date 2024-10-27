@@ -13,7 +13,7 @@ class DataIngestion:
         self.client = MongoClient(
             f"mongodb+srv://{quote_plus(os.getenv('MONGODB_USERNAME'))}:"
             f"{quote_plus(os.getenv('MONGODB_PASSWORD'))}"
-            "@cluster0.02fs1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+            "@cluster0.gy0vf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
         )
 
     def fetch_data_from_mongodb(self):
