@@ -69,3 +69,22 @@ source env/bin/activate  # On Windows: env\Scripts\activate
 ``` bash
 pip install -r requirements.txt
 ```
+## Project Workflow
+1. constants
+2. entity
+3. components
+4. pipeline
+## Set up your Mongodb atlas cloud and add your credintials
+``` bash
+$Env:MONGODB_USERNAME = "YOURUSERNAME"
+$ENV:MONDB_PASSWORD = "YOURPASSWORD"
+```
+## Run the pipeline
+``` bash
+python test.py
+```
+## Start the flask 
+```bash 
+python app.py
+```
+
