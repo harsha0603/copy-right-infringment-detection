@@ -11,8 +11,6 @@ pymongo
 boto3
 mypy-boto3-s3
 botocore
-Django==4.2.5        
-djongo 
 from_root
 dill
 PyYAML
@@ -30,3 +28,4 @@ torchvision
 torchaudio
 transformers
 json5
+flask
