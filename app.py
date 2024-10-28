@@ -46,8 +46,8 @@ def upload_pdf():
         # Generate and save report
         report_path = generate_report(similarity_result)
         
-        # Display the result on report page
-        return render_template("report.html", result=similarity_result, report_path=report_path)
+        # Update this line to extract the report filename
+        return render_template("report.html", result=similarity_result, report_filename=os.path.basename(report_path))
     else:
         flash("Please upload a valid PDF file")
         return redirect(url_for('index'))
