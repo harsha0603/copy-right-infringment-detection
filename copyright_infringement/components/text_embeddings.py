@@ -31,15 +31,18 @@ class DataEmbeddings:
 
     def process_and_save_embeddings(self, preprocessed_data_path: str) -> EmbeddingArtifact:
         """Processes text data, generates embeddings, and saves to a pickle file."""
-        # Load preprocessed data
+    # Load preprocessed data
         df = self.load_data(preprocessed_data_path)
         
+        # Print available columns for debugging
+        print("DataFrame columns:", df.columns)
+
         # Initialize lists to store embeddings and metadata
         embeddings = []
-        metadata = {'title': [], 'author': []}
+        metadata = {'title': [], 'authors': []}  # Ensure the 'authors' key exists
         
         # Specify the column to generate embeddings for (e.g., 'description')
-        embedding_column = 'extracted_text'  # Adjust based on your data
+        embedding_column = 'description'  # Adjust based on your data
         
         # Generate embeddings for each entry in the DataFrame
         for idx, row in tqdm(df.iterrows(), total=len(df), desc="Generating embeddings"):
@@ -49,7 +52,7 @@ class DataEmbeddings:
             
             # Save metadata information
             metadata['title'].append(row['title'])  # Adjust based on your DataFrame
-            metadata['author'].append(row['author'])  # Adjust based on your DataFrame
+            metadata['authors'].append(row['authors'])  # Use the correct key here
 
         # Save embeddings and metadata as pickle files
         with open(self.config.embedding_file_path, 'wb') as f:

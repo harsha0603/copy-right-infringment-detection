@@ -5,13 +5,18 @@ from copyright_infringement.logger import logging
 from copyright_infringement.components.data_ingestion import DataIngestion
 from copyright_infringement.components.data_preprocessing import DataPreprocessing
 from copyright_infringement.components.text_embeddings import DataEmbeddings
-from copyright_infringement.entity.config_entity import (DataIngestionConfig,
-                                                         DataPreprocessingConfig,
-                                                         EmbeddingConfig)
-from copyright_infringement.entity.artifact_entity import (DataIngestionArtifact,
-                                                           DataPreprocessingArtifact,
-                                                           EmbeddingArtifact)
-from copyright_infringement.entity.config_entity import PreprocessingParams
+
+from copyright_infringement.entity.config_entity import (
+    DataIngestionConfig,
+    DataPreprocessingConfig,
+    EmbeddingConfig,
+    PreprocessingParams
+)
+from copyright_infringement.entity.artifact_entity import (
+    DataIngestionArtifact,
+    DataPreprocessingArtifact,
+    EmbeddingArtifact
+)
 
 
 class TrainPipeline:
@@ -22,9 +27,6 @@ class TrainPipeline:
         self.text_embeddings_config = EmbeddingConfig()
 
     def start_data_ingestion(self) -> DataIngestionArtifact:
-        """
-        Starts the data ingestion component.
-        """
         try:
             logging.info("Starting data ingestion...")
             data_ingestion = DataIngestion(config=self.data_ingestion_config)
@@ -35,9 +37,6 @@ class TrainPipeline:
             raise CopyRight(e, sys) from e
 
     def start_data_preprocessing(self, csv_file_path: str) -> DataPreprocessingArtifact:
-        """
-        Starts the data preprocessing component using the preprocessed CSV data.
-        """
         try:
             logging.info("Starting data preprocessing...")
             data_preprocessing = DataPreprocessing(
@@ -51,9 +50,6 @@ class TrainPipeline:
             raise CopyRight(e, sys)
 
     def start_text_embeddings(self, preprocessed_data_path: str) -> EmbeddingArtifact:
-        """
-        Starts the text embedding generation component.
-        """
         try:
             logging.info("Starting text embeddings...")
             data_embeddings = DataEmbeddings(config=self.text_embeddings_config, 
@@ -64,9 +60,10 @@ class TrainPipeline:
         except Exception as e:
             raise CopyRight(e, sys)
 
-    def run_pipeline(self):
+    def run_pipeline(self) -> EmbeddingArtifact:
         """
-        Runs the complete pipeline by sequentially calling data ingestion, preprocessing, and embeddings generation.
+        Runs the complete pipeline by sequentially calling data ingestion, preprocessing,
+        and embeddings generation.
         """
         try:
             logging.info("Starting the training pipeline...")
@@ -87,5 +84,6 @@ class TrainPipeline:
 
         except Exception as e:
             raise CopyRight(e, sys)
+
 
 

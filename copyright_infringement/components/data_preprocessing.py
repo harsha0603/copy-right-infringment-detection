@@ -36,16 +36,16 @@ class DataPreprocessing:
             logging.info("Removed duplicate entries.")
 
         if self.params.lower_case:
-            data['extracted_text'] = data['extracted_text'].str.lower()
+            data['description'] = data['description'].str.lower()
             logging.info("Converted text to lower case.")
 
         # Remove special characters
-        data['extracted_text'] = data['extracted_text'].apply(self.remove_special_characters)
+        data['description'] = data['description'].apply(self.remove_special_characters)
         logging.info("Removed special characters from text.")
 
         # Remove stop words
         if self.params.remove_stopwords:
-            data['extracted_text'] = data['extracted_text'].apply(lambda x: ' '.join(
+            data['description'] = data['description'].apply(lambda x: ' '.join(
                 word for word in x.split() if word not in self.stop_words))
             logging.info("Removed stop words from text.")
 
@@ -53,13 +53,13 @@ class DataPreprocessing:
         if self.params.stemming:
             from nltk.stem import PorterStemmer
             stemmer = PorterStemmer()
-            data['extracted_text'] = data['extracted_text'].apply(lambda x: ' '.join(stemmer.stem(word) for word in x.split()))
+            data['description'] = data['description'].apply(lambda x: ' '.join(stemmer.stem(word) for word in x.split()))
             logging.info("Applied stemming to text.")
 
         if self.params.lemmatization:
             from nltk.stem import WordNetLemmatizer
             lemmatizer = WordNetLemmatizer()
-            data['extracted_text'] = data['extracted_text'].apply(lambda x: ' '.join(lemmatizer.lemmatize(word) for word in x.split()))
+            data['description'] = data['description'].apply(lambda x: ' '.join(lemmatizer.lemmatize(word) for word in x.split()))
             logging.info("Applied lemmatization to text.")
 
         return data

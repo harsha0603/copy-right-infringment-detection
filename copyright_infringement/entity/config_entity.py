@@ -1,7 +1,7 @@
 import os
 from dataclasses import dataclass
 from datetime import datetime
-from copyright_infringement.constants import PIPELINE_NAME, ARTIFACT_DIR
+from copyright_infringement.constants import *
 
 # Timestamp for unique artifact directory creation
 TIMESTAMP = datetime.now().strftime('%Y%m%d%H%M%S')
@@ -24,7 +24,7 @@ training_pipeline_config: TrainingPipelineConfig = TrainingPipelineConfig()
 class DataIngestionConfig:
     data_ingestion_dir: str = training_pipeline_config.get_component_artifact_dir("data_ingestion_books")
     csv_file_path: str = os.path.join(data_ingestion_dir, "books_data.csv")
-    database_name: str = "copyright"
+    database_name: str = "copyright_infringement"
     collection_name: str = "books"
 
 @dataclass
@@ -47,17 +47,29 @@ class PreprocessingParams:
     remove_special_chars: bool = True # Remove special characters
 
 # Configuration for Embedding Generation
+import os
+from dataclasses import dataclass
+
+
 @dataclass
 class EmbeddingConfig:
-    embedding_dir: str = training_pipeline_config.get_component_artifact_dir("embeddings")
+    embedding_dir: str = os.path.join(ARTIFACT_DIR, "embeddings")  # Set to a static embeddings directory
     model_name: str = "bert-base-uncased"  # Model name for generating embeddings
-    batch_size: int = 16                   # Batch size for embedding generation
+    batch_size: int = 16  # Batch size for embedding generation
     embedding_file_path: str = os.path.join(embedding_dir, "text_embeddings.pkl")
     metadata_file_path: str = os.path.join(embedding_dir, "metadata.pkl")  # Metadata (author/title) for reference
-    max_length: int = 512 
+    max_length: int = 512
+
+
+# Create the embeddings directory if it does not exist
+# This must be done after defining the EmbeddingConfig class
+os.makedirs(os.path.join(ARTIFACT_DIR, "embeddings"), exist_ok=True)
+
+# Initialize the embedding configuration
 embedding_config: EmbeddingConfig = EmbeddingConfig()
+
 
 
 @dataclass
 class SimilarityDetectionConfig:
-    similarity_threshold: float = 0.75  # Adjust based on your accuracy needs
+    similarity_threshold: float = 0.8  # Adjust based on your accuracy needs

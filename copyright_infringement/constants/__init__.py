@@ -9,7 +9,7 @@ password = quote_plus(os.getenv("MONGODB_PASSWORD"))
 MONGODB_URL_KEY = f'mongodb+srv://{username}:{password}cluster0.gy0vf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
 
 # Database and collection names
-DATABASE_NAME = "copyright"
+DATABASE_NAME = "copyright_infringement"
 COLLECTION_NAME = "books"
 
 PIPELINE_NAME: str = "copyright_infringement"

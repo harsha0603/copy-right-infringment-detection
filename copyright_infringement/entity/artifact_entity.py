@@ -15,7 +15,7 @@ class DataPreprocessingArtifact:
 @dataclass
 class EmbeddingArtifact:
     embedding_file_path: str       # Path where text embeddings are saved
-    metadata_file_path: str        # Path where metadata (author/title) is saved
+    metadata_file_path: str        # Path where metadata (authors/title) is saved
 
 
 @dataclass

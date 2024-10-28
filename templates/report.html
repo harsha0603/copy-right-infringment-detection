@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Similarity Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .alert {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .alert-warning {
+            background-color: #ffcc00;
+            color: #333;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .similarity-score {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px 0;
+            background-color: #007bff;
+            color: #fff;
+        }
+        a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            color: #fff;
+            background-color: #007bff;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Similarity Detection Report</h1>
+    </header>
+    <div class="container">
+        {% if result.is_copyright_infringement %}
+            <div class="alert alert-warning">
+                <strong>Potential Copyright Infringement Detected!</strong>
+            </div>
+            <p class="similarity-score">Similarity Score: {{ result.similarity_score }}</p>
+            <p>Similar Text: {{ result.similar_text }}</p>
+        {% else %}
+            <div class="alert alert-success">
+                <strong>No Infringement Detected.</strong>
+            </div>
+            <p class="similarity-score">Similarity Score: {{ result.similarity_score }}</p>
+        {% endif %}
+        <br>
+        <a href="{{ url_for('index') }}">Go Back</a>
+    </div>
+    <footer>
+        <p>&copy; 2024 Copyright Infringement Detection</p>
+    </footer>
+</body>
+</html>

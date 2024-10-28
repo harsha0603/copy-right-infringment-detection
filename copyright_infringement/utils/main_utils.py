@@ -89,3 +89,25 @@ def get_user_input() -> str:
     except Exception as e:
         logging.error(f"Error in getting user input: {e}")
         raise
+
+import pdfplumber
+import os
+from werkzeug.utils import secure_filename
+import logging
+
+def extract_text_from_pdf(pdf_file_path: str) -> str:
+    text_content = ""
+    try:
+        with pdfplumber.open(pdf_file_path) as pdf:
+            for page in pdf.pages:
+                text_content += page.extract_text() or ""
+        return text_content
+    except Exception as e:
+        logging.error(f"Error extracting text from PDF: {e}")
+        return ""
+
+def save_pdf(file, upload_folder="uploads"):
+    filename = secure_filename(file.filename)
+    pdf_path = os.path.join(upload_folder, filename)
+    file.save(pdf_path)
+    return pdf_path
