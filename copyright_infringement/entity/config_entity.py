@@ -72,4 +72,56 @@ embedding_config: EmbeddingConfig = EmbeddingConfig()
 
 @dataclass
 class SimilarityDetectionConfig:
-    similarity_threshold: float = 0.8  # Adjust based on your accuracy needs
+    similarity_threshold: float = 0.8  
+
+
+import os
+from dataclasses import dataclass
+from copyright_infringement.constants import *
+
+import os
+from dataclasses import dataclass
+from copyright_infringement.constants import *
+
+# image_ingestion_config.py
+
+import os
+from dataclasses import dataclass
+from copyright_infringement.constants import *
+
+from urllib.parse import quote_plus
+import os
+from dataclasses import dataclass
+
+from urllib.parse import quote_plus
+
+@dataclass
+class ImageIngestionConfig:
+    """Configuration for Image Data Ingestion"""
+    
+    # MongoDB credentials
+    mongodb_username: str = "harshamassss"  # Replace with your actual username
+    mongodb_password: str = "hs113LWAhjZUBFSq"  # Replace with your actual password
+
+    # URL-encode the username and password
+    encoded_username = quote_plus(mongodb_username)
+    encoded_password = quote_plus(mongodb_password)
+    
+    # Format the MongoDB URL with encoded credentials
+    mongodb_url: str = f"mongodb+srv://{encoded_username}:{encoded_password}@cluster0.02fs1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+    
+    database_name: str = "copyright_ingringement"  # Replace this with the actual database name
+
+    def __init__(self, mongodb_url: str = None, database_name: str = None, raw_image_path: str = None, embeddings_path: str = None):
+        self.mongodb_url = mongodb_url if mongodb_url else self.mongodb_url
+        self.database_name = database_name if database_name else self.database_name
+        self.raw_image_dir = raw_image_path if raw_image_path else os.path.join(ARTIFACT_DIR, "raw_images")
+        self.embeddings_dir = embeddings_path if embeddings_path else os.path.join(ARTIFACT_DIR, "image_embeddings")
+
+    def get_raw_image_path(self):
+        """Returns the path to store raw images."""
+        return self.raw_image_dir
+    
+    def get_embeddings_path(self):
+        """Returns the path to store image embeddings."""
+        return self.embeddings_dir

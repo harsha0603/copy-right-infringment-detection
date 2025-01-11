@@ -163,3 +163,5 @@ cython_debug/
 artifact*
 uploads*
 reports*
+test_images*
+image_uploads*

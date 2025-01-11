@@ -23,3 +23,23 @@ class SimilarityResult:
     is_copyright_infringement: bool
     similarity_score: float
     similar_text: str
+
+from dataclasses import dataclass
+from typing import List
+
+from dataclasses import dataclass
+from typing import List
+
+@dataclass
+class ImageMetadata:
+    """Metadata related to each image."""
+    filename: str
+    content_type: str
+    embedding_file_path: str  # Path to the generated embedding
+    raw_image_path: str  # Path to the raw image file
+
+@dataclass
+class ImageIngestionArtifact:
+    """Artifact for the image ingestion process."""
+    image_metadata: List[ImageMetadata]  # List of image metadata objects
+

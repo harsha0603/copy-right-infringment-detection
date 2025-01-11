@@ -1,0 +1,30 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1>Image Similarity Report</h1>
+        
+        <h3>Uploaded Image:</h3>
+        <img src="{{ url_for('static', filename='image_uploads/' + uploaded_image) }}" alt="Uploaded Image">
+
+        
+        <h3 class="mt-4">Similarity Check Results</h3>
+        {% if most_similar_files %}
+            <p><strong>Potential copyright infringement detected!</strong></p>
+            <p>Similarity Score: {{ similarity }}</p>
+            
+            <h4>Most Similar Images:</h4>
+            <ul>
+                {% for file in most_similar_files %}
+                    <li>{{ file }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p><strong>No infringement detected. The image is unique!</strong></p>
+        {% endif %}
+        
+        <br>
+        <a href="{{ url_for('index') }}" class="btn btn-primary">Go Back</a>
+    </div>
+{% endblock %}
