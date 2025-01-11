@@ -11,13 +11,11 @@ The **Copyright Infringement Detection System** detects whether digital content 
 - Machine learning model detects similarities between the uploaded content and copyrighted material.
 - Real-time analysis and report generation.
 - API for submitting content and receiving results.
-- Cloud storage and management on AWS S3.
 - Fully containerized using Docker.
 - CI/CD setup with GitHub Actions for automated testing and deployment.
 ### Technology Stack
-- Backend: Django (v4.2.5)
+- Backend: Flask 
 - Database: MongoDB
-- Cloud: AWS S3
 - Containerization: Docker
 - CI/CD: GitHub Actions
 - Machine Learning: scikit-learn, evidently for monitoring
