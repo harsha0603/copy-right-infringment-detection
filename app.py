@@ -54,37 +54,41 @@ def get_embedding(image_path):
 
 def check_image_infringement(input_image_path, threshold=0.85):
     """
-    Check if the input image matches any stored embeddings and return the image(s) with the highest similarity.
+    Check if the input image matches any stored embeddings and return the image with the highest similarity.
     """
     input_embedding = get_embedding(input_image_path)
 
-    # Initialize variables to store maximum similarity and corresponding file(s)
+    # Initialize variables to store maximum similarity and corresponding file
     max_similarity = 0
-    most_similar_files = []
+    most_similar_file = None
 
     # Load all stored embeddings and calculate similarity
     for embedding_file in os.listdir(EMBEDDINGS_PATH):
         embedding_path = os.path.join(EMBEDDINGS_PATH, embedding_file)
 
-        # Load stored embedding
-        stored_embedding = np.load(embedding_path)
+        # Check if the file is an embedding file
+        if embedding_file.endswith("_embeddings.npy"):
+            # Extract the base name of the image from the embedding filename
+            image_name = embedding_file.replace("_embeddings.npy", "")
 
-        # Calculate cosine similarity
-        similarity = cosine_similarity(input_embedding.reshape(1, -1), stored_embedding.reshape(1, -1))[0][0]
+            # Load stored embedding
+            stored_embedding = np.load(embedding_path)
 
+            # Calculate cosine similarity
+            similarity = cosine_similarity(input_embedding.reshape(1, -1), stored_embedding.reshape(1, -1))[0][0]
 
-        # Update max similarity and reset the list if a higher similarity is found
-        if similarity > max_similarity:
-            max_similarity = similarity
-            most_similar_files = [embedding_file]
-        elif similarity == max_similarity:  # Handle ties
-            most_similar_files.append(embedding_file)
+            # Update max similarity if a higher similarity is found
+            if similarity > max_similarity:
+                max_similarity = similarity
+                most_similar_file = (image_name, similarity)
 
     # Check if the highest similarity exceeds the threshold
     if max_similarity >= threshold:
-        return most_similar_files, max_similarity
+        return most_similar_file, max_similarity
     else:
         return None, 0
+
+
 
 # -----------------------------------
 # Routes for Text Similarity Detection
@@ -192,14 +196,14 @@ def upload_image():
         file.save(image_path)
         
         # Run similarity detection
-        most_similar_files, max_similarity = check_image_infringement(image_path, threshold=0.85)
+        most_similar_file, max_similarity = check_image_infringement(image_path, threshold=0.85)
         
-        if most_similar_files:
+        if most_similar_file:
             flash(f"Potential infringement detected! Similarity: {max_similarity}")
             # Pass the filename to the template for rendering
             return render_template('image_report.html', 
                                    uploaded_image=file.filename,  # Make sure this is passed
-                                   most_similar_files=most_similar_files, 
+                                   most_similar_file=most_similar_file, 
                                    similarity=max_similarity,datetime=datetime.now())
         else:
             flash("No infringement detected. Image is unique.")

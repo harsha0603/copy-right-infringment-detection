@@ -34,10 +34,15 @@ class ImageDataIngestion:
         print(f"Directories set: Raw images - {self.raw_image_path}, Embeddings - {self.embeddings_path}")
 
     def preprocess_image(self, image_data):
-        """Preprocess the image for the CNN model."""
+    
         try:
             image = Image.open(BytesIO(image_data))  # Convert binary data to image
             image = image.resize((224, 224))  # Resizing image to fit the ResNet50 input
+            
+            # Convert to RGB (removes the alpha channel if present)
+            if image.mode == 'RGBA':
+                image = image.convert('RGB')
+
             img_array = np.array(image)
             img_array = np.expand_dims(img_array, axis=0)  # Adding batch dimension
             img_array = preprocess_input(img_array)  # Preprocess input for ResNet50
@@ -45,6 +50,7 @@ class ImageDataIngestion:
         except Exception as e:
             print(f"Error during image preprocessing: {e}")
             raise
+
 
     def generate_embeddings(self, img_array):
         """Generate embeddings using ResNet50 model."""
