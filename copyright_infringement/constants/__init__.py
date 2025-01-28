@@ -1,5 +1,7 @@
 import os
+from dotenv import load_dotenv
 
+load_dotenv()
 # Use environment variables for sensitive information
 username = os.getenv("MONGODB_USERNAME")
 password = os.getenv("MONGODB_PASSWORD")

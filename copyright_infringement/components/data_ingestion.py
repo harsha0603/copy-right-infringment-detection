@@ -5,15 +5,15 @@ from copyright_infringement.entity.config_entity import DataIngestionConfig
 from copyright_infringement.entity.artifact_entity import DataIngestionArtifact
 from urllib.parse import quote_plus
 import logging
+from dotenv import load_dotenv
 
+load_dotenv()
 
 class DataIngestion:
     def __init__(self, config: DataIngestionConfig):
         self.config = config
         self.client = MongoClient(
-            f"mongodb+srv://{quote_plus(os.getenv('MONGODB_USERNAME'))}:"
-            f"{quote_plus(os.getenv('MONGODB_PASSWORD'))}"
-            "@cluster0.02fs1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+            "mongodb+srv://harsha:harsha123@cluster0.02fs1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
         )
 
     def fetch_data_from_mongodb(self):

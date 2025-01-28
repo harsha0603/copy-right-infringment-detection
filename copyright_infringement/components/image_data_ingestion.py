@@ -1,5 +1,3 @@
-# image_data_ingestion.py
-
 import os
 import gridfs
 import numpy as np
@@ -123,12 +121,8 @@ if __name__ == "__main__":
         mongodb_username = "USERNAME"  
         mongodb_password = "PASSWORD"  
         
-        # URL-encode the username and password
-        encoded_username = quote_plus(mongodb_username)
-        encoded_password = quote_plus(mongodb_password)
-        
         # Format the MongoDB URL with the encoded credentials
-        mongodb_url = f"mongodb+srv://{encoded_username}:{encoded_password}@cluster0.02fs1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+        mongodb_url = "mongodb+srv://harsha:harsha123@cluster0.02fs1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
         # Initialize config with the updated MongoDB URL
         image_ingestion_config = ImageIngestionConfig(
