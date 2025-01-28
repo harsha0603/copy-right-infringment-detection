@@ -70,7 +70,8 @@ def check_image_infringement(input_image_path, threshold=0.85):
         stored_embedding = np.load(embedding_path)
 
         # Calculate cosine similarity
-        similarity = cosine_similarity(input_embedding, stored_embedding)[0][0]
+        similarity = cosine_similarity(input_embedding.reshape(1, -1), stored_embedding.reshape(1, -1))[0][0]
+
 
         # Update max similarity and reset the list if a higher similarity is found
         if similarity > max_similarity:
