@@ -81,6 +81,9 @@ $ENV:MONDB_PASSWORD = "YOURPASSWORD"
 ``` bash
 python test.py
 ```
+```
+python copyright_infringement\components\image_data_ingestion.py
+```
 ## Start the flask 
 ```bash 
 python app.py
