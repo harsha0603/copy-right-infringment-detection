@@ -3,8 +3,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 # Use environment variables for sensitive information
-username = os.getenv("MONGODB_USERNAME")
-password = os.getenv("MONGODB_PASSWORD")
+username = os.getenv("USERNAME")
+password = os.getenv("PASSWORD")
 
 # Construct URI with credentials
 MONGODB_URL_KEY = f'mongodb+srv://{username}:{password}cluster0.gy0vf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
