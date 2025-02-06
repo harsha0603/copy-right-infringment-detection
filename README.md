@@ -88,4 +88,14 @@ python copyright_infringement\components\image_data_ingestion.py
 ```bash 
 python app.py
 ```
+## To build docker image 
+```
+docker-compose build
+```
+## To run the docker 
+```
+docker run -p 8000:8000 <your image name>
+```
+
+
 
