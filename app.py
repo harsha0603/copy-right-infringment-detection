@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for, send_file, flash
+from flask import Flask, request, render_template, redirect, url_for, send_file, flash, send_from_directory
 import os
 from datetime import datetime
 import numpy as np
@@ -16,34 +16,35 @@ app = Flask(__name__)
 app.secret_key = "your_secret_key"
 app.config['UPLOAD_FOLDER'] = "uploads"
 app.config['REPORT_FOLDER'] = "reports"
-app.config['IMAGE_UPLOAD_FOLDER'] = "static/image_uploads"  # Corrected image upload folder path
+app.config['IMAGE_UPLOAD_FOLDER'] = "static/image_uploads"
+app.config['RAW_IMAGES_FOLDER'] = "artifacts/raw_images"
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 os.makedirs(app.config['REPORT_FOLDER'], exist_ok=True)
 os.makedirs(app.config['IMAGE_UPLOAD_FOLDER'], exist_ok=True)
+os.makedirs(app.config['RAW_IMAGES_FOLDER'], exist_ok=True)
 
 # Paths for Image Similarity
 RAW_IMAGES_PATH = "./artifacts/raw_images"
 EMBEDDINGS_PATH = "./artifacts/embeddings"
 
 # Text Similarity Config
-similarity_config = SimilarityDetectionConfig(similarity_threshold=0.75)  # Customize as needed
-embedding_config = EmbeddingConfig(model_name="bert-base-uncased")  # Use your desired model
+similarity_config = SimilarityDetectionConfig(similarity_threshold=0.75)
+embedding_config = EmbeddingConfig(model_name="bert-base-uncased")
 similarity_detector = SimilarityDetection(config=similarity_config, embedding_config=embedding_config)
 
 # Image Similarity Config
-base_model = ResNet50(weights="imagenet", include_top=False, pooling="avg")  # Pretrained model for embeddings
+base_model = ResNet50(weights="imagenet", include_top=False, pooling="avg")
 
 # -----------------------------------------------
 # Helper Functions for Image Similarity Detection
 # -----------------------------------------------
 def preprocess_image(image_path):
     """Preprocesses an image for ResNet50."""
-    image = load_img(image_path, target_size=(224, 224))  # Load and resize image
-    img_array = img_to_array(image)  # Convert image to numpy array
-    img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
-    img_array = preprocess_input(img_array)  # Preprocess for ResNet50
+    image = load_img(image_path, target_size=(224, 224))
+    img_array = img_to_array(image)
+    img_array = np.expand_dims(img_array, axis=0)
+    img_array = preprocess_input(img_array)
     return img_array
-
 
 def get_embedding(image_path):
     """Generate embedding for a single image."""
@@ -51,44 +52,35 @@ def get_embedding(image_path):
     embedding = base_model.predict(image_array)
     return embedding
 
-
 def check_image_infringement(input_image_path, threshold=0.85):
     """
     Check if the input image matches any stored embeddings and return the image with the highest similarity.
     """
     input_embedding = get_embedding(input_image_path)
-
-    # Initialize variables to store maximum similarity and corresponding file
     max_similarity = 0
     most_similar_file = None
 
-    # Load all stored embeddings and calculate similarity
     for embedding_file in os.listdir(EMBEDDINGS_PATH):
         embedding_path = os.path.join(EMBEDDINGS_PATH, embedding_file)
 
-        # Check if the file is an embedding file
         if embedding_file.endswith("_embeddings.npy"):
-            # Extract the base name of the image from the embedding filename
             image_name = embedding_file.replace("_embeddings.npy", "")
-
-            # Load stored embedding
             stored_embedding = np.load(embedding_path)
-
-            # Calculate cosine similarity
             similarity = cosine_similarity(input_embedding.reshape(1, -1), stored_embedding.reshape(1, -1))[0][0]
 
-            # Update max similarity if a higher similarity is found
             if similarity > max_similarity:
                 max_similarity = similarity
                 most_similar_file = (image_name, similarity)
 
-    # Check if the highest similarity exceeds the threshold
     if max_similarity >= threshold:
         return most_similar_file, max_similarity
     else:
         return None, 0
 
-
+# Add route to serve raw images
+@app.route('/raw_images/<path:filename>')
+def serve_raw_image(filename):
+    return send_from_directory(app.config['RAW_IMAGES_FOLDER'], filename)
 
 # -----------------------------------
 # Routes for Text Similarity Detection
@@ -192,7 +184,8 @@ def upload_image():
     
     if file and file.filename.lower().endswith(('.png', '.jpg', '.jpeg')):
         # Save file to the defined image upload folder
-        image_path = os.path.join(app.config['IMAGE_UPLOAD_FOLDER'], file.filename)  # Corrected path
+        unique_filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{file.filename}"
+        image_path = os.path.join(app.config['IMAGE_UPLOAD_FOLDER'], unique_filename)
         file.save(image_path)
         
         # Run similarity detection
@@ -200,11 +193,11 @@ def upload_image():
         
         if most_similar_file:
             flash(f"Potential infringement detected! Similarity: {max_similarity}")
-            # Pass the filename to the template for rendering
             return render_template('image_report.html', 
-                                   uploaded_image=file.filename,  # Make sure this is passed
-                                   most_similar_file=most_similar_file, 
-                                   similarity=max_similarity,datetime=datetime.now())
+                                uploaded_image=unique_filename,
+                                most_similar_file=most_similar_file, 
+                                similarity=max_similarity,
+                                datetime=datetime.now())
         else:
             flash("No infringement detected. Image is unique.")
             return redirect(url_for('index'))

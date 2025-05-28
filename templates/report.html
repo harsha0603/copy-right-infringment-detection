@@ -1,29 +1,57 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-5">
-    <h2 class="text-center">Similarity Report</h2>
-    <hr>
-    
-    {% if result.is_copyright_infringement %}
-        <div class="alert alert-danger">
-            <h4 class="alert-heading">Potential Copyright Infringement Detected!</h4>
-            <p><strong>Similarity Score:</strong> {{ result.similarity_score }}</p>
-            <p><strong>Sourced From:</strong> {{ result.similar_text }}</p>
-        </div>
-    {% else %}
-        <div class="alert alert-success">
-            <h4 class="alert-heading">No Infringement Detected</h4>
-            <p><strong>Similarity Score:</strong> {{ result.similarity_score }}</p>
-        </div>
-    {% endif %}
-    
-    <h4>Download Detailed Report</h4>
-    <p>Click the link below to download the detailed report of the similarity check.</p>
-    <a href="{{ url_for('download_report', filename=report_filename) }}" class="btn btn-primary">Download Report</a>
-    
-    <hr>
-    <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Upload</a>
-</div>
+<div class="report-container">
+    <div class="text-center mb-4">
+        <h2 class="report-header">Text Analysis Report</h2>
+        <p class="text-muted">Results of the copyright infringement detection</p>
+    </div>
 
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-file-alt me-2"></i>Analysis Results</h5>
+        </div>
+        <div class="card-body">
+            {% if result.is_copyright_infringement %}
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Potential copyright infringement detected!
+                </div>
+                <div class="similarity-score mb-3">
+                    <i class="fas fa-percentage me-2"></i>
+                    Similarity Score: {{ "%.2f"|format(result.similarity_score * 100) }}%
+                </div>
+                <div class="mt-4">
+                    <h6>Similar Content Found:</h6>
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <p class="mb-0">{{ result.similar_text }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle me-2"></i>
+                    No copyright infringement detected
+                </div>
+                <p class="text-muted mt-3">
+                    The uploaded text appears to be unique and doesn't match any known copyrighted content.
+                </p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="text-center mt-4">
+        <a href="{{ url_for('index') }}" class="btn btn-primary me-2">
+            <i class="fas fa-home me-2"></i>Back to Home
+        </a>
+        <a href="{{ url_for('download_report', filename=report_filename) }}" class="btn btn-success me-2">
+            <i class="fas fa-download me-2"></i>Download Report
+        </a>
+        <button onclick="window.print()" class="btn btn-secondary">
+            <i class="fas fa-print me-2"></i>Print Report
+        </button>
+    </div>
+</div>
 {% endblock %}

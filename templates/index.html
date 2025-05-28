@@ -2,36 +2,77 @@
 
 {% block content %}
 <div class="jumbotron text-center">
-    <h1 class="display-4">Welcome to the Copyright Infringement Detection System</h1>
-    <p class="lead">Upload a PDF or an Image to check for copyright infringement.</p>
+    <h1 class="display-4">Copyright Infringement Detection System</h1>
+    <p class="lead">Protect your intellectual property with our advanced detection system</p>
     <hr class="my-4">
-    <p>Choose between text or image-based similarity detection to identify potential matches.</p>
+    <p>Upload your content to check for potential copyright violations</p>
 </div>
 
-<!-- PDF Upload Section -->
-<div id="upload" class="row mt-5">
-    <div class="col-md-6 mx-auto">
-        <h3>Upload PDF for Text Similarity Detection</h3>
-        <form action="{{ url_for('upload_pdf') }}" method="POST" enctype="multipart/form-data">
-            <div class="mb-3">
-                <input type="file" class="form-control" name="file" accept=".pdf" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Upload PDF</button>
-        </form>
+<div class="row">
+    <!-- PDF Upload Section -->
+    <div class="col-md-6">
+        <div id="upload" class="file-upload-container">
+            <h3 class="mb-4">Text Similarity Detection</h3>
+            <p class="text-muted mb-4">Upload a PDF document to check for text-based copyright infringement</p>
+            <form action="{{ url_for('upload_pdf') }}" method="POST" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <input type="file" class="form-control" name="file" accept=".pdf" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-file-pdf me-2"></i>Upload PDF
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Image Upload Section -->
+    <div class="col-md-6">
+        <div id="upload" class="file-upload-container">
+            <h3 class="mb-4">Image Similarity Detection</h3>
+            <p class="text-muted mb-4">Upload an image to check for visual copyright infringement</p>
+            <form action="{{ url_for('upload_image') }}" method="POST" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <input type="file" class="form-control" name="file" accept=".jpg, .jpeg, .png" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-image me-2"></i>Upload Image
+                </button>
+            </form>
+        </div>
     </div>
 </div>
 
-<!-- Image Upload Section -->
+<!-- Features Section -->
 <div class="row mt-5">
-    <div class="col-md-6 mx-auto">
-        <h3>Upload Image for Image Similarity Detection</h3>
-        <form action="{{ url_for('upload_image') }}" method="POST" enctype="multipart/form-data">
-            <div class="mb-3">
-                <input type="file" class="form-control" name="file" accept=".jpg, .jpeg, .png" required>
+    <div class="col-12">
+        <h2 class="text-center mb-4">Key Features</h2>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-search fa-3x mb-3 text-primary"></i>
+                <h5 class="card-title">Advanced Detection</h5>
+                <p class="card-text">State-of-the-art algorithms for accurate copyright detection</p>
             </div>
-            <button type="submit" class="btn btn-primary">Upload Image</button>
-        </form>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-bolt fa-3x mb-3 text-primary"></i>
+                <h5 class="card-title">Fast Processing</h5>
+                <p class="card-text">Quick analysis of your content with real-time results</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-shield-alt fa-3x mb-3 text-primary"></i>
+                <h5 class="card-title">Secure Analysis</h5>
+                <p class="card-text">Your content is processed securely and confidentially</p>
+            </div>
+        </div>
     </div>
 </div>
-
 {% endblock %}
